@@ -1,0 +1,25 @@
+program p8:
+
+	var n,i:integer;
+            a:boolean;		
+begin
+	n := 0;
+	i := 1;
+	a := true;
+	while i <= 1 do
+	begin
+		if eof then
+		begin
+			
+			i := 2;
+			if 1 then
+				output(33333)
+		end
+		else
+			if 1 then
+				n := n+read	
+	end;
+	
+	n := n + 1;
+	output(n,1,1,2,3,4,4);
+end p8.

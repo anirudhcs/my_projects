@@ -1,0 +1,8 @@
+program test:
+const a = 2;
+      b = a;
+var i:integer;
+begin
+ i:=ord(true);
+ output(i);
+end test.

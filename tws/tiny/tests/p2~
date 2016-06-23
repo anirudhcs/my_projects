@@ -1,0 +1,13 @@
+program copy:
+
+   { Echo-prints the first ten numbers on the input }
+
+var count: integer;
+     
+begin
+    count := 1;   # initialization
+    while (count <= 10) do
+       begin
+          count := count + 1;
+       end
+end copy.

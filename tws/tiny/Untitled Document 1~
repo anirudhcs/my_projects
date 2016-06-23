@@ -1,0 +1,10 @@
+$d = tests/pr1/
+
+    for file in $dpr1*; do 
+       echo $file":";
+       echo;
+       ./tc file;
+       echo "off to the next file";
+       echo; 
+    done
+

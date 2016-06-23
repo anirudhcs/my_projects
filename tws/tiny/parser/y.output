@@ -1,0 +1,3514 @@
+State 175 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: Tiny $end
+
+    1 Tiny: PROGRAM Name ':' Consts Enums Dclns Subprogs Body Name '.'
+
+    2 Dclns: VAR Dclns_1
+    3      | %empty
+
+    4 Dclns_1: Dcln ';'
+    5        | Dcln ';' Dclns_1
+
+    6 Dcln: Dcln_1
+
+    7 Dcln_1: Name ':' Name
+    8       | Name ',' Dcln_1
+
+    9 Consts: CONST Consts_1
+   10       | %empty
+
+   11 Consts_1: Con ';'
+   12         | Con ';' Consts_1
+
+   13 Con: Name EQ Constants
+
+   14 Constants: Chrs
+   15          | Ints
+   16          | Name
+
+   17 Enums: TYPE Enums_1
+   18      | %empty
+
+   19 Enums_1: Typ ';'
+   20        | Typ ';' Enums_1
+
+   21 Typ: Name EQ Literals
+
+   22 Literals: '(' Literals_1
+
+   23 Literals_1: Name ')'
+   24           | Name ',' Literals_1
+
+   25 Subprogs: Subprogs_1
+   26         | %empty
+
+   27 Subprogs_1: Subroutines
+   28           | Subroutines Subprogs_1
+
+   29 Subroutines: Function
+   30            | Procedure
+
+   31 Function: FUNCTION Name '(' Params ')' ':' Name ';' Consts Enums Dclns Body Name ';'
+
+   32 Procedure: PROCEDURE Name '(' Params ')' ';' Consts Enums Dclns Body Name ';'
+
+   33 Params: Params_1
+
+   34 Params_1: Params_1_1
+   35         | Params_1_1_1
+
+   36 Params_1_1_1: Dcln Params_1
+   37             | Dcln ';' Params_1_1_1
+
+   38 Params_1_1: Dcln
+   39           | Dcln ';' Params_1_1
+
+   40 Body: BEGINX Body_1
+
+   41 Body_1: Statement END
+   42       | Statement ';' Body_1
+
+   43 Statement: Name ASSIGNMENT Expression
+   44          | Name SWAP Name
+   45          | OUTPUT '(' Statement_1
+   46          | IF Expression THEN Statement Statement_1_1
+   47          | WHILE Expression DO Statement
+   48          | REPEAT Statement_1_1_1
+   49          | LOOP Statement_1_1_1_1
+   50          | EXITX
+   51          | FOR Name ASSIGNMENT Expression UPTO Expression DO Statement
+   52          | FOR Name ASSIGNMENT Expression DOWNTO Expression DO Statement
+   53          | CASE Expression OF Statement_1_1_1_1_1
+   54          | READ '(' Statement_1_1_1_1_1_1
+   55          | Name '(' Statement_1_1_1_1_1_1_1
+   56          | RETURN '(' Expression ')'
+   57          | Body
+   58          | %empty
+
+   59 Statement_1_1_1_1_1_1_1: Expression ')'
+   60                        | Expression ',' Statement_1_1_1_1_1_1_1
+
+   61 Statement_1_1_1_1_1_1: MName ')'
+   62                      | MName ',' Statement_1_1_1_1_1_1
+
+   63 Statement_1_1_1_1_1: CaseClause Statement_1_1_1_1_1_1_1_1
+   64                    | CaseClause Statement_1_1_1_1_1
+
+   65 Statement_1_1_1_1_1_1_1_1: END
+   66                          | OtherwiseClause END
+
+   67 Statement_1_1_1_1: Statement POOL
+   68                  | Statement ';' Statement_1_1_1_1
+
+   69 Statement_1_1_1: Statement UNTIL Expression
+   70                | Statement ';' Statement_1_1_1
+
+   71 Statement_1_1: %empty
+   72              | ELSE Statement
+
+   73 Statement_1: MExpression ')'
+   74            | MExpression ',' Statement_1
+
+   75 MName: Name
+
+   76 MExpression: Expression
+   77            | Strs
+
+   78 CaseClause: Cl ':' Statement ';'
+
+   79 Cl: RangeStuf RANGE RangeStuf
+   80   | RangeStuf
+
+   81 RangeStuf: Name
+   82          | Chrs
+   83          | Ints
+
+   84 OtherwiseClause: OTHERWISE Statement OtherwiseClause_1
+
+   85 OtherwiseClause_1: %empty
+   86                  | ';'
+
+   87 Expression: Term
+   88           | Term LTE Term
+   89           | Term EQ Term
+   90           | Term NE Term
+   91           | Term GTE Term
+   92           | Term LT Term
+   93           | Term GT Term
+
+   94 Term: Primary
+   95     | Term '+' Primary
+   96     | Term '-' Primary
+   97     | Term OR Primary
+
+   98 Primary: Secondary
+   99        | Primary '*' Secondary
+  100        | Primary '/' Secondary
+  101        | Primary AND Secondary
+  102        | Primary MOD Secondary
+
+  103 Secondary: '-' Secondary
+  104          | '+' Secondary
+  105          | NOT Secondary
+  106          | Tertiary
+
+  107 Tertiary: A EXP Tertiary
+  108         | A
+
+  109 A: EOFX
+  110  | Name
+  111  | Ints
+  112  | Chrs
+  113  | SUCC '(' Expression ')'
+  114  | PRED '(' Expression ')'
+  115  | ORD '(' Expression ')'
+  116  | CHR '(' Expression ')'
+  117  | Name '(' A_1
+  118  | '(' Expression ')'
+
+  119 A_1: Expression ')'
+  120    | Expression ',' A_1
+
+  121 Name: IDENTIFIER
+
+  122 Ints: INTEGER_NUM
+
+  123 Chrs: CHAR
+
+  124 Strs: STRING
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 22 31 32 45 54 55 56 113 114 115 116 117 118
+')' (41) 23 31 32 56 59 61 73 113 114 115 116 118 119
+'*' (42) 99
+'+' (43) 95 104
+',' (44) 8 24 60 62 74 120
+'-' (45) 96 103
+'.' (46) 1
+'/' (47) 100
+':' (58) 1 7 31 78
+';' (59) 4 5 11 12 19 20 31 32 37 39 42 68 70 78 86
+error (256)
+STRING (258) 124
+END (259) 41 65 66
+UPTO (260) 51
+VAR (261) 2
+IDENTIFIER (262) 121
+CHR (263) 116
+POOL (264) 67
+IF (265) 46
+FUNCTION (266) 31
+READ (267) 54
+REPEAT (268) 48
+RANGE (269) 79
+ELSE (270) 72
+RETURN (271) 56
+UNTIL (272) 69
+FOR (273) 51 52
+THEN (274) 46
+SWAP (275) 44
+OF (276) 53
+NE (277) 90
+CHAR (278) 123
+MOD (279) 102
+GT (280) 93
+CASE (281) 53
+WHILE (282) 47
+OUTPUT (283) 45
+EQ (284) 13 21 89
+PROCEDURE (285) 32
+CONST (286) 9
+GTE (287) 91
+PRED (288) 114
+NOT (289) 105
+DO (290) 47 51 52
+BEGINX (291) 40
+INTEGER_NUM (292) 122
+ORD (293) 115
+AND (294) 101
+EOFX (295) 109
+EXP (296) 107
+LTE (297) 88
+LOOP (298) 49
+SUCC (299) 113
+TYPE (300) 17
+OR (301) 97
+LT (302) 92
+OTHERWISE (303) 84
+EXITX (304) 50
+ASSIGNMENT (305) 43 51 52
+PROGRAM (306) 1
+DOWNTO (307) 52
+
+
+Nonterminals, with rules where they appear
+
+$accept (63)
+    on left: 0
+Tiny (64)
+    on left: 1, on right: 0
+Dclns (65)
+    on left: 2 3, on right: 1 31 32
+Dclns_1 (66)
+    on left: 4 5, on right: 2 5
+Dcln (67)
+    on left: 6, on right: 4 5 36 37 38 39
+Dcln_1 (68)
+    on left: 7 8, on right: 6 8
+Consts (69)
+    on left: 9 10, on right: 1 31 32
+Consts_1 (70)
+    on left: 11 12, on right: 9 12
+Con (71)
+    on left: 13, on right: 11 12
+Constants (72)
+    on left: 14 15 16, on right: 13
+Enums (73)
+    on left: 17 18, on right: 1 31 32
+Enums_1 (74)
+    on left: 19 20, on right: 17 20
+Typ (75)
+    on left: 21, on right: 19 20
+Literals (76)
+    on left: 22, on right: 21
+Literals_1 (77)
+    on left: 23 24, on right: 22 24
+Subprogs (78)
+    on left: 25 26, on right: 1
+Subprogs_1 (79)
+    on left: 27 28, on right: 25 28
+Subroutines (80)
+    on left: 29 30, on right: 27 28
+Function (81)
+    on left: 31, on right: 29
+Procedure (82)
+    on left: 32, on right: 30
+Params (83)
+    on left: 33, on right: 31 32
+Params_1 (84)
+    on left: 34 35, on right: 33 36
+Params_1_1_1 (85)
+    on left: 36 37, on right: 35 37
+Params_1_1 (86)
+    on left: 38 39, on right: 34 39
+Body (87)
+    on left: 40, on right: 1 31 32 57
+Body_1 (88)
+    on left: 41 42, on right: 40 42
+Statement (89)
+    on left: 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58, on right:
+    41 42 46 47 51 52 67 68 69 70 72 78 84
+Statement_1_1_1_1_1_1_1 (90)
+    on left: 59 60, on right: 55 60
+Statement_1_1_1_1_1_1 (91)
+    on left: 61 62, on right: 54 62
+Statement_1_1_1_1_1 (92)
+    on left: 63 64, on right: 53 64
+Statement_1_1_1_1_1_1_1_1 (93)
+    on left: 65 66, on right: 63
+Statement_1_1_1_1 (94)
+    on left: 67 68, on right: 49 68
+Statement_1_1_1 (95)
+    on left: 69 70, on right: 48 70
+Statement_1_1 (96)
+    on left: 71 72, on right: 46
+Statement_1 (97)
+    on left: 73 74, on right: 45 74
+MName (98)
+    on left: 75, on right: 61 62
+MExpression (99)
+    on left: 76 77, on right: 73 74
+CaseClause (100)
+    on left: 78, on right: 63 64
+Cl (101)
+    on left: 79 80, on right: 78
+RangeStuf (102)
+    on left: 81 82 83, on right: 79 80
+OtherwiseClause (103)
+    on left: 84, on right: 66
+OtherwiseClause_1 (104)
+    on left: 85 86, on right: 84
+Expression (105)
+    on left: 87 88 89 90 91 92 93, on right: 43 46 47 51 52 53 56 59
+    60 69 76 113 114 115 116 118 119 120
+Term (106)
+    on left: 94 95 96 97, on right: 87 88 89 90 91 92 93 95 96 97
+Primary (107)
+    on left: 98 99 100 101 102, on right: 94 95 96 97 99 100 101 102
+Secondary (108)
+    on left: 103 104 105 106, on right: 98 99 100 101 102 103 104 105
+Tertiary (109)
+    on left: 107 108, on right: 106 107
+A (110)
+    on left: 109 110 111 112 113 114 115 116 117 118, on right: 107
+    108
+A_1 (111)
+    on left: 119 120, on right: 117 120
+Name (112)
+    on left: 121, on right: 1 7 8 13 16 21 23 24 31 32 43 44 51 52
+    55 75 81 110 117
+Ints (113)
+    on left: 122, on right: 15 83 111
+Chrs (114)
+    on left: 123, on right: 14 82 112
+Strs (115)
+    on left: 124, on right: 77
+
+
+State 0
+
+    0 $accept: . Tiny $end
+
+    PROGRAM  shift, and go to state 1
+
+    Tiny  go to state 2
+
+
+State 1
+
+    1 Tiny: PROGRAM . Name ':' Consts Enums Dclns Subprogs Body Name '.'
+
+    IDENTIFIER  shift, and go to state 3
+
+    Name  go to state 4
+
+
+State 2
+
+    0 $accept: Tiny . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+  121 Name: IDENTIFIER .
+
+    $default  reduce using rule 121 (Name)
+
+
+State 4
+
+    1 Tiny: PROGRAM Name . ':' Consts Enums Dclns Subprogs Body Name '.'
+
+    ':'  shift, and go to state 6
+
+
+State 5
+
+    0 $accept: Tiny $end .
+
+    $default  accept
+
+
+State 6
+
+    1 Tiny: PROGRAM Name ':' . Consts Enums Dclns Subprogs Body Name '.'
+
+    CONST  shift, and go to state 7
+
+    $default  reduce using rule 10 (Consts)
+
+    Consts  go to state 8
+
+
+State 7
+
+    9 Consts: CONST . Consts_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    Consts_1  go to state 9
+    Con       go to state 10
+    Name      go to state 11
+
+
+State 8
+
+    1 Tiny: PROGRAM Name ':' Consts . Enums Dclns Subprogs Body Name '.'
+
+    TYPE  shift, and go to state 12
+
+    $default  reduce using rule 18 (Enums)
+
+    Enums  go to state 13
+
+
+State 9
+
+    9 Consts: CONST Consts_1 .
+
+    $default  reduce using rule 9 (Consts)
+
+
+State 10
+
+   11 Consts_1: Con . ';'
+   12         | Con . ';' Consts_1
+
+    ';'  shift, and go to state 14
+
+
+State 11
+
+   13 Con: Name . EQ Constants
+
+    EQ  shift, and go to state 15
+
+
+State 12
+
+   17 Enums: TYPE . Enums_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    Enums_1  go to state 16
+    Typ      go to state 17
+    Name     go to state 18
+
+
+State 13
+
+    1 Tiny: PROGRAM Name ':' Consts Enums . Dclns Subprogs Body Name '.'
+
+    VAR  shift, and go to state 19
+
+    $default  reduce using rule 3 (Dclns)
+
+    Dclns  go to state 20
+
+
+State 14
+
+   11 Consts_1: Con ';' .
+   12         | Con ';' . Consts_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    $default  reduce using rule 11 (Consts_1)
+
+    Consts_1  go to state 21
+    Con       go to state 10
+    Name      go to state 11
+
+
+State 15
+
+   13 Con: Name EQ . Constants
+
+    IDENTIFIER   shift, and go to state 3
+    CHAR         shift, and go to state 22
+    INTEGER_NUM  shift, and go to state 23
+
+    Constants  go to state 24
+    Name       go to state 25
+    Ints       go to state 26
+    Chrs       go to state 27
+
+
+State 16
+
+   17 Enums: TYPE Enums_1 .
+
+    $default  reduce using rule 17 (Enums)
+
+
+State 17
+
+   19 Enums_1: Typ . ';'
+   20        | Typ . ';' Enums_1
+
+    ';'  shift, and go to state 28
+
+
+State 18
+
+   21 Typ: Name . EQ Literals
+
+    EQ  shift, and go to state 29
+
+
+State 19
+
+    2 Dclns: VAR . Dclns_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    Dclns_1  go to state 30
+    Dcln     go to state 31
+    Dcln_1   go to state 32
+    Name     go to state 33
+
+
+State 20
+
+    1 Tiny: PROGRAM Name ':' Consts Enums Dclns . Subprogs Body Name '.'
+
+    FUNCTION   shift, and go to state 34
+    PROCEDURE  shift, and go to state 35
+
+    $default  reduce using rule 26 (Subprogs)
+
+    Subprogs     go to state 36
+    Subprogs_1   go to state 37
+    Subroutines  go to state 38
+    Function     go to state 39
+    Procedure    go to state 40
+
+
+State 21
+
+   12 Consts_1: Con ';' Consts_1 .
+
+    $default  reduce using rule 12 (Consts_1)
+
+
+State 22
+
+  123 Chrs: CHAR .
+
+    $default  reduce using rule 123 (Chrs)
+
+
+State 23
+
+  122 Ints: INTEGER_NUM .
+
+    $default  reduce using rule 122 (Ints)
+
+
+State 24
+
+   13 Con: Name EQ Constants .
+
+    $default  reduce using rule 13 (Con)
+
+
+State 25
+
+   16 Constants: Name .
+
+    $default  reduce using rule 16 (Constants)
+
+
+State 26
+
+   15 Constants: Ints .
+
+    $default  reduce using rule 15 (Constants)
+
+
+State 27
+
+   14 Constants: Chrs .
+
+    $default  reduce using rule 14 (Constants)
+
+
+State 28
+
+   19 Enums_1: Typ ';' .
+   20        | Typ ';' . Enums_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    $default  reduce using rule 19 (Enums_1)
+
+    Enums_1  go to state 41
+    Typ      go to state 17
+    Name     go to state 18
+
+
+State 29
+
+   21 Typ: Name EQ . Literals
+
+    '('  shift, and go to state 42
+
+    Literals  go to state 43
+
+
+State 30
+
+    2 Dclns: VAR Dclns_1 .
+
+    $default  reduce using rule 2 (Dclns)
+
+
+State 31
+
+    4 Dclns_1: Dcln . ';'
+    5        | Dcln . ';' Dclns_1
+
+    ';'  shift, and go to state 44
+
+
+State 32
+
+    6 Dcln: Dcln_1 .
+
+    $default  reduce using rule 6 (Dcln)
+
+
+State 33
+
+    7 Dcln_1: Name . ':' Name
+    8       | Name . ',' Dcln_1
+
+    ':'  shift, and go to state 45
+    ','  shift, and go to state 46
+
+
+State 34
+
+   31 Function: FUNCTION . Name '(' Params ')' ':' Name ';' Consts Enums Dclns Body Name ';'
+
+    IDENTIFIER  shift, and go to state 3
+
+    Name  go to state 47
+
+
+State 35
+
+   32 Procedure: PROCEDURE . Name '(' Params ')' ';' Consts Enums Dclns Body Name ';'
+
+    IDENTIFIER  shift, and go to state 3
+
+    Name  go to state 48
+
+
+State 36
+
+    1 Tiny: PROGRAM Name ':' Consts Enums Dclns Subprogs . Body Name '.'
+
+    BEGINX  shift, and go to state 49
+
+    Body  go to state 50
+
+
+State 37
+
+   25 Subprogs: Subprogs_1 .
+
+    $default  reduce using rule 25 (Subprogs)
+
+
+State 38
+
+   27 Subprogs_1: Subroutines .
+   28           | Subroutines . Subprogs_1
+
+    FUNCTION   shift, and go to state 34
+    PROCEDURE  shift, and go to state 35
+
+    $default  reduce using rule 27 (Subprogs_1)
+
+    Subprogs_1   go to state 51
+    Subroutines  go to state 38
+    Function     go to state 39
+    Procedure    go to state 40
+
+
+State 39
+
+   29 Subroutines: Function .
+
+    $default  reduce using rule 29 (Subroutines)
+
+
+State 40
+
+   30 Subroutines: Procedure .
+
+    $default  reduce using rule 30 (Subroutines)
+
+
+State 41
+
+   20 Enums_1: Typ ';' Enums_1 .
+
+    $default  reduce using rule 20 (Enums_1)
+
+
+State 42
+
+   22 Literals: '(' . Literals_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    Literals_1  go to state 52
+    Name        go to state 53
+
+
+State 43
+
+   21 Typ: Name EQ Literals .
+
+    $default  reduce using rule 21 (Typ)
+
+
+State 44
+
+    4 Dclns_1: Dcln ';' .
+    5        | Dcln ';' . Dclns_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    $default  reduce using rule 4 (Dclns_1)
+
+    Dclns_1  go to state 54
+    Dcln     go to state 31
+    Dcln_1   go to state 32
+    Name     go to state 33
+
+
+State 45
+
+    7 Dcln_1: Name ':' . Name
+
+    IDENTIFIER  shift, and go to state 3
+
+    Name  go to state 55
+
+
+State 46
+
+    8 Dcln_1: Name ',' . Dcln_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    Dcln_1  go to state 56
+    Name    go to state 33
+
+
+State 47
+
+   31 Function: FUNCTION Name . '(' Params ')' ':' Name ';' Consts Enums Dclns Body Name ';'
+
+    '('  shift, and go to state 57
+
+
+State 48
+
+   32 Procedure: PROCEDURE Name . '(' Params ')' ';' Consts Enums Dclns Body Name ';'
+
+    '('  shift, and go to state 58
+
+
+State 49
+
+   40 Body: BEGINX . Body_1
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body       go to state 69
+    Body_1     go to state 70
+    Statement  go to state 71
+    Name       go to state 72
+
+
+State 50
+
+    1 Tiny: PROGRAM Name ':' Consts Enums Dclns Subprogs Body . Name '.'
+
+    IDENTIFIER  shift, and go to state 3
+
+    Name  go to state 73
+
+
+State 51
+
+   28 Subprogs_1: Subroutines Subprogs_1 .
+
+    $default  reduce using rule 28 (Subprogs_1)
+
+
+State 52
+
+   22 Literals: '(' Literals_1 .
+
+    $default  reduce using rule 22 (Literals)
+
+
+State 53
+
+   23 Literals_1: Name . ')'
+   24           | Name . ',' Literals_1
+
+    ','  shift, and go to state 74
+    ')'  shift, and go to state 75
+
+
+State 54
+
+    5 Dclns_1: Dcln ';' Dclns_1 .
+
+    $default  reduce using rule 5 (Dclns_1)
+
+
+State 55
+
+    7 Dcln_1: Name ':' Name .
+
+    $default  reduce using rule 7 (Dcln_1)
+
+
+State 56
+
+    8 Dcln_1: Name ',' Dcln_1 .
+
+    $default  reduce using rule 8 (Dcln_1)
+
+
+State 57
+
+   31 Function: FUNCTION Name '(' . Params ')' ':' Name ';' Consts Enums Dclns Body Name ';'
+
+    IDENTIFIER  shift, and go to state 3
+
+    Dcln          go to state 76
+    Dcln_1        go to state 32
+    Params        go to state 77
+    Params_1      go to state 78
+    Params_1_1_1  go to state 79
+    Params_1_1    go to state 80
+    Name          go to state 33
+
+
+State 58
+
+   32 Procedure: PROCEDURE Name '(' . Params ')' ';' Consts Enums Dclns Body Name ';'
+
+    IDENTIFIER  shift, and go to state 3
+
+    Dcln          go to state 76
+    Dcln_1        go to state 32
+    Params        go to state 81
+    Params_1      go to state 78
+    Params_1_1_1  go to state 79
+    Params_1_1    go to state 80
+    Name          go to state 33
+
+
+State 59
+
+   46 Statement: IF . Expression THEN Statement Statement_1_1
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 91
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 60
+
+   54 Statement: READ . '(' Statement_1_1_1_1_1_1
+
+    '('  shift, and go to state 100
+
+
+State 61
+
+   48 Statement: REPEAT . Statement_1_1_1
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body             go to state 69
+    Statement        go to state 101
+    Statement_1_1_1  go to state 102
+    Name             go to state 72
+
+
+State 62
+
+   56 Statement: RETURN . '(' Expression ')'
+
+    '('  shift, and go to state 103
+
+
+State 63
+
+   51 Statement: FOR . Name ASSIGNMENT Expression UPTO Expression DO Statement
+   52          | FOR . Name ASSIGNMENT Expression DOWNTO Expression DO Statement
+
+    IDENTIFIER  shift, and go to state 3
+
+    Name  go to state 104
+
+
+State 64
+
+   53 Statement: CASE . Expression OF Statement_1_1_1_1_1
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 105
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 65
+
+   47 Statement: WHILE . Expression DO Statement
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 106
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 66
+
+   45 Statement: OUTPUT . '(' Statement_1
+
+    '('  shift, and go to state 107
+
+
+State 67
+
+   49 Statement: LOOP . Statement_1_1_1_1
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body               go to state 69
+    Statement          go to state 108
+    Statement_1_1_1_1  go to state 109
+    Name               go to state 72
+
+
+State 68
+
+   50 Statement: EXITX .
+
+    $default  reduce using rule 50 (Statement)
+
+
+State 69
+
+   57 Statement: Body .
+
+    $default  reduce using rule 57 (Statement)
+
+
+State 70
+
+   40 Body: BEGINX Body_1 .
+
+    $default  reduce using rule 40 (Body)
+
+
+State 71
+
+   41 Body_1: Statement . END
+   42       | Statement . ';' Body_1
+
+    END  shift, and go to state 110
+    ';'  shift, and go to state 111
+
+
+State 72
+
+   43 Statement: Name . ASSIGNMENT Expression
+   44          | Name . SWAP Name
+   55          | Name . '(' Statement_1_1_1_1_1_1_1
+
+    SWAP        shift, and go to state 112
+    ASSIGNMENT  shift, and go to state 113
+    '('         shift, and go to state 114
+
+
+State 73
+
+    1 Tiny: PROGRAM Name ':' Consts Enums Dclns Subprogs Body Name . '.'
+
+    '.'  shift, and go to state 115
+
+
+State 74
+
+   24 Literals_1: Name ',' . Literals_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    Literals_1  go to state 116
+    Name        go to state 53
+
+
+State 75
+
+   23 Literals_1: Name ')' .
+
+    $default  reduce using rule 23 (Literals_1)
+
+
+State 76
+
+   36 Params_1_1_1: Dcln . Params_1
+   37             | Dcln . ';' Params_1_1_1
+   38 Params_1_1: Dcln .
+   39           | Dcln . ';' Params_1_1
+
+    IDENTIFIER  shift, and go to state 3
+    ';'         shift, and go to state 117
+
+    $default  reduce using rule 38 (Params_1_1)
+
+    Dcln          go to state 76
+    Dcln_1        go to state 32
+    Params_1      go to state 118
+    Params_1_1_1  go to state 79
+    Params_1_1    go to state 80
+    Name          go to state 33
+
+
+State 77
+
+   31 Function: FUNCTION Name '(' Params . ')' ':' Name ';' Consts Enums Dclns Body Name ';'
+
+    ')'  shift, and go to state 119
+
+
+State 78
+
+   33 Params: Params_1 .
+
+    $default  reduce using rule 33 (Params)
+
+
+State 79
+
+   35 Params_1: Params_1_1_1 .
+
+    $default  reduce using rule 35 (Params_1)
+
+
+State 80
+
+   34 Params_1: Params_1_1 .
+
+    $default  reduce using rule 34 (Params_1)
+
+
+State 81
+
+   32 Procedure: PROCEDURE Name '(' Params . ')' ';' Consts Enums Dclns Body Name ';'
+
+    ')'  shift, and go to state 120
+
+
+State 82
+
+  116 A: CHR . '(' Expression ')'
+
+    '('  shift, and go to state 121
+
+
+State 83
+
+  114 A: PRED . '(' Expression ')'
+
+    '('  shift, and go to state 122
+
+
+State 84
+
+  105 Secondary: NOT . Secondary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Secondary  go to state 123
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 85
+
+  115 A: ORD . '(' Expression ')'
+
+    '('  shift, and go to state 124
+
+
+State 86
+
+  109 A: EOFX .
+
+    $default  reduce using rule 109 (A)
+
+
+State 87
+
+  113 A: SUCC . '(' Expression ')'
+
+    '('  shift, and go to state 125
+
+
+State 88
+
+  118 A: '(' . Expression ')'
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 126
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 89
+
+  104 Secondary: '+' . Secondary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Secondary  go to state 127
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 90
+
+  103 Secondary: '-' . Secondary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Secondary  go to state 128
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 91
+
+   46 Statement: IF Expression . THEN Statement Statement_1_1
+
+    THEN  shift, and go to state 129
+
+
+State 92
+
+   87 Expression: Term .
+   88           | Term . LTE Term
+   89           | Term . EQ Term
+   90           | Term . NE Term
+   91           | Term . GTE Term
+   92           | Term . LT Term
+   93           | Term . GT Term
+   95 Term: Term . '+' Primary
+   96     | Term . '-' Primary
+   97     | Term . OR Primary
+
+    NE   shift, and go to state 130
+    GT   shift, and go to state 131
+    EQ   shift, and go to state 132
+    GTE  shift, and go to state 133
+    LTE  shift, and go to state 134
+    OR   shift, and go to state 135
+    LT   shift, and go to state 136
+    '+'  shift, and go to state 137
+    '-'  shift, and go to state 138
+
+    $default  reduce using rule 87 (Expression)
+
+
+State 93
+
+   94 Term: Primary .
+   99 Primary: Primary . '*' Secondary
+  100        | Primary . '/' Secondary
+  101        | Primary . AND Secondary
+  102        | Primary . MOD Secondary
+
+    MOD  shift, and go to state 139
+    AND  shift, and go to state 140
+    '*'  shift, and go to state 141
+    '/'  shift, and go to state 142
+
+    $default  reduce using rule 94 (Term)
+
+
+State 94
+
+   98 Primary: Secondary .
+
+    $default  reduce using rule 98 (Primary)
+
+
+State 95
+
+  106 Secondary: Tertiary .
+
+    $default  reduce using rule 106 (Secondary)
+
+
+State 96
+
+  107 Tertiary: A . EXP Tertiary
+  108         | A .
+
+    EXP  shift, and go to state 143
+
+    $default  reduce using rule 108 (Tertiary)
+
+
+State 97
+
+  110 A: Name .
+  117  | Name . '(' A_1
+
+    '('  shift, and go to state 144
+
+    $default  reduce using rule 110 (A)
+
+
+State 98
+
+  111 A: Ints .
+
+    $default  reduce using rule 111 (A)
+
+
+State 99
+
+  112 A: Chrs .
+
+    $default  reduce using rule 112 (A)
+
+
+State 100
+
+   54 Statement: READ '(' . Statement_1_1_1_1_1_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    Statement_1_1_1_1_1_1  go to state 145
+    MName                  go to state 146
+    Name                   go to state 147
+
+
+State 101
+
+   69 Statement_1_1_1: Statement . UNTIL Expression
+   70                | Statement . ';' Statement_1_1_1
+
+    UNTIL  shift, and go to state 148
+    ';'    shift, and go to state 149
+
+
+State 102
+
+   48 Statement: REPEAT Statement_1_1_1 .
+
+    $default  reduce using rule 48 (Statement)
+
+
+State 103
+
+   56 Statement: RETURN '(' . Expression ')'
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 150
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 104
+
+   51 Statement: FOR Name . ASSIGNMENT Expression UPTO Expression DO Statement
+   52          | FOR Name . ASSIGNMENT Expression DOWNTO Expression DO Statement
+
+    ASSIGNMENT  shift, and go to state 151
+
+
+State 105
+
+   53 Statement: CASE Expression . OF Statement_1_1_1_1_1
+
+    OF  shift, and go to state 152
+
+
+State 106
+
+   47 Statement: WHILE Expression . DO Statement
+
+    DO  shift, and go to state 153
+
+
+State 107
+
+   45 Statement: OUTPUT '(' . Statement_1
+
+    STRING       shift, and go to state 154
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Statement_1  go to state 155
+    MExpression  go to state 156
+    Expression   go to state 157
+    Term         go to state 92
+    Primary      go to state 93
+    Secondary    go to state 94
+    Tertiary     go to state 95
+    A            go to state 96
+    Name         go to state 97
+    Ints         go to state 98
+    Chrs         go to state 99
+    Strs         go to state 158
+
+
+State 108
+
+   67 Statement_1_1_1_1: Statement . POOL
+   68                  | Statement . ';' Statement_1_1_1_1
+
+    POOL  shift, and go to state 159
+    ';'   shift, and go to state 160
+
+
+State 109
+
+   49 Statement: LOOP Statement_1_1_1_1 .
+
+    $default  reduce using rule 49 (Statement)
+
+
+State 110
+
+   41 Body_1: Statement END .
+
+    $default  reduce using rule 41 (Body_1)
+
+
+State 111
+
+   42 Body_1: Statement ';' . Body_1
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body       go to state 69
+    Body_1     go to state 161
+    Statement  go to state 71
+    Name       go to state 72
+
+
+State 112
+
+   44 Statement: Name SWAP . Name
+
+    IDENTIFIER  shift, and go to state 3
+
+    Name  go to state 162
+
+
+State 113
+
+   43 Statement: Name ASSIGNMENT . Expression
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 163
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 114
+
+   55 Statement: Name '(' . Statement_1_1_1_1_1_1_1
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Statement_1_1_1_1_1_1_1  go to state 164
+    Expression               go to state 165
+    Term                     go to state 92
+    Primary                  go to state 93
+    Secondary                go to state 94
+    Tertiary                 go to state 95
+    A                        go to state 96
+    Name                     go to state 97
+    Ints                     go to state 98
+    Chrs                     go to state 99
+
+
+State 115
+
+    1 Tiny: PROGRAM Name ':' Consts Enums Dclns Subprogs Body Name '.' .
+
+    $default  reduce using rule 1 (Tiny)
+
+
+State 116
+
+   24 Literals_1: Name ',' Literals_1 .
+
+    $default  reduce using rule 24 (Literals_1)
+
+
+State 117
+
+   37 Params_1_1_1: Dcln ';' . Params_1_1_1
+   39 Params_1_1: Dcln ';' . Params_1_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    Dcln          go to state 76
+    Dcln_1        go to state 32
+    Params_1_1_1  go to state 166
+    Params_1_1    go to state 167
+    Name          go to state 33
+
+
+State 118
+
+   36 Params_1_1_1: Dcln Params_1 .
+
+    $default  reduce using rule 36 (Params_1_1_1)
+
+
+State 119
+
+   31 Function: FUNCTION Name '(' Params ')' . ':' Name ';' Consts Enums Dclns Body Name ';'
+
+    ':'  shift, and go to state 168
+
+
+State 120
+
+   32 Procedure: PROCEDURE Name '(' Params ')' . ';' Consts Enums Dclns Body Name ';'
+
+    ';'  shift, and go to state 169
+
+
+State 121
+
+  116 A: CHR '(' . Expression ')'
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 170
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 122
+
+  114 A: PRED '(' . Expression ')'
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 171
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 123
+
+  105 Secondary: NOT Secondary .
+
+    $default  reduce using rule 105 (Secondary)
+
+
+State 124
+
+  115 A: ORD '(' . Expression ')'
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 172
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 125
+
+  113 A: SUCC '(' . Expression ')'
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 173
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 126
+
+  118 A: '(' Expression . ')'
+
+    ')'  shift, and go to state 174
+
+
+State 127
+
+  104 Secondary: '+' Secondary .
+
+    $default  reduce using rule 104 (Secondary)
+
+
+State 128
+
+  103 Secondary: '-' Secondary .
+
+    $default  reduce using rule 103 (Secondary)
+
+
+State 129
+
+   46 Statement: IF Expression THEN . Statement Statement_1_1
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body       go to state 69
+    Statement  go to state 175
+    Name       go to state 72
+
+
+State 130
+
+   90 Expression: Term NE . Term
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Term       go to state 176
+    Primary    go to state 93
+    Secondary  go to state 94
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 131
+
+   93 Expression: Term GT . Term
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Term       go to state 177
+    Primary    go to state 93
+    Secondary  go to state 94
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 132
+
+   89 Expression: Term EQ . Term
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Term       go to state 178
+    Primary    go to state 93
+    Secondary  go to state 94
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 133
+
+   91 Expression: Term GTE . Term
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Term       go to state 179
+    Primary    go to state 93
+    Secondary  go to state 94
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 134
+
+   88 Expression: Term LTE . Term
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Term       go to state 180
+    Primary    go to state 93
+    Secondary  go to state 94
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 135
+
+   97 Term: Term OR . Primary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Primary    go to state 181
+    Secondary  go to state 94
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 136
+
+   92 Expression: Term LT . Term
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Term       go to state 182
+    Primary    go to state 93
+    Secondary  go to state 94
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 137
+
+   95 Term: Term '+' . Primary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Primary    go to state 183
+    Secondary  go to state 94
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 138
+
+   96 Term: Term '-' . Primary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Primary    go to state 184
+    Secondary  go to state 94
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 139
+
+  102 Primary: Primary MOD . Secondary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Secondary  go to state 185
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 140
+
+  101 Primary: Primary AND . Secondary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Secondary  go to state 186
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 141
+
+   99 Primary: Primary '*' . Secondary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Secondary  go to state 187
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 142
+
+  100 Primary: Primary '/' . Secondary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Secondary  go to state 188
+    Tertiary   go to state 95
+    A          go to state 96
+    Name       go to state 97
+    Ints       go to state 98
+    Chrs       go to state 99
+
+
+State 143
+
+  107 Tertiary: A EXP . Tertiary
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+
+    Tertiary  go to state 189
+    A         go to state 96
+    Name      go to state 97
+    Ints      go to state 98
+    Chrs      go to state 99
+
+
+State 144
+
+  117 A: Name '(' . A_1
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 190
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    A_1         go to state 191
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 145
+
+   54 Statement: READ '(' Statement_1_1_1_1_1_1 .
+
+    $default  reduce using rule 54 (Statement)
+
+
+State 146
+
+   61 Statement_1_1_1_1_1_1: MName . ')'
+   62                      | MName . ',' Statement_1_1_1_1_1_1
+
+    ','  shift, and go to state 192
+    ')'  shift, and go to state 193
+
+
+State 147
+
+   75 MName: Name .
+
+    $default  reduce using rule 75 (MName)
+
+
+State 148
+
+   69 Statement_1_1_1: Statement UNTIL . Expression
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 194
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 149
+
+   70 Statement_1_1_1: Statement ';' . Statement_1_1_1
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body             go to state 69
+    Statement        go to state 101
+    Statement_1_1_1  go to state 195
+    Name             go to state 72
+
+
+State 150
+
+   56 Statement: RETURN '(' Expression . ')'
+
+    ')'  shift, and go to state 196
+
+
+State 151
+
+   51 Statement: FOR Name ASSIGNMENT . Expression UPTO Expression DO Statement
+   52          | FOR Name ASSIGNMENT . Expression DOWNTO Expression DO Statement
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 197
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 152
+
+   53 Statement: CASE Expression OF . Statement_1_1_1_1_1
+
+    IDENTIFIER   shift, and go to state 3
+    CHAR         shift, and go to state 22
+    INTEGER_NUM  shift, and go to state 23
+
+    Statement_1_1_1_1_1  go to state 198
+    CaseClause           go to state 199
+    Cl                   go to state 200
+    RangeStuf            go to state 201
+    Name                 go to state 202
+    Ints                 go to state 203
+    Chrs                 go to state 204
+
+
+State 153
+
+   47 Statement: WHILE Expression DO . Statement
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body       go to state 69
+    Statement  go to state 205
+    Name       go to state 72
+
+
+State 154
+
+  124 Strs: STRING .
+
+    $default  reduce using rule 124 (Strs)
+
+
+State 155
+
+   45 Statement: OUTPUT '(' Statement_1 .
+
+    $default  reduce using rule 45 (Statement)
+
+
+State 156
+
+   73 Statement_1: MExpression . ')'
+   74            | MExpression . ',' Statement_1
+
+    ','  shift, and go to state 206
+    ')'  shift, and go to state 207
+
+
+State 157
+
+   76 MExpression: Expression .
+
+    $default  reduce using rule 76 (MExpression)
+
+
+State 158
+
+   77 MExpression: Strs .
+
+    $default  reduce using rule 77 (MExpression)
+
+
+State 159
+
+   67 Statement_1_1_1_1: Statement POOL .
+
+    $default  reduce using rule 67 (Statement_1_1_1_1)
+
+
+State 160
+
+   68 Statement_1_1_1_1: Statement ';' . Statement_1_1_1_1
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body               go to state 69
+    Statement          go to state 108
+    Statement_1_1_1_1  go to state 208
+    Name               go to state 72
+
+
+State 161
+
+   42 Body_1: Statement ';' Body_1 .
+
+    $default  reduce using rule 42 (Body_1)
+
+
+State 162
+
+   44 Statement: Name SWAP Name .
+
+    $default  reduce using rule 44 (Statement)
+
+
+State 163
+
+   43 Statement: Name ASSIGNMENT Expression .
+
+    $default  reduce using rule 43 (Statement)
+
+
+State 164
+
+   55 Statement: Name '(' Statement_1_1_1_1_1_1_1 .
+
+    $default  reduce using rule 55 (Statement)
+
+
+State 165
+
+   59 Statement_1_1_1_1_1_1_1: Expression . ')'
+   60                        | Expression . ',' Statement_1_1_1_1_1_1_1
+
+    ','  shift, and go to state 209
+    ')'  shift, and go to state 210
+
+
+State 166
+
+   37 Params_1_1_1: Dcln ';' Params_1_1_1 .
+
+    $default  reduce using rule 37 (Params_1_1_1)
+
+
+State 167
+
+   39 Params_1_1: Dcln ';' Params_1_1 .
+
+    $default  reduce using rule 39 (Params_1_1)
+
+
+State 168
+
+   31 Function: FUNCTION Name '(' Params ')' ':' . Name ';' Consts Enums Dclns Body Name ';'
+
+    IDENTIFIER  shift, and go to state 3
+
+    Name  go to state 211
+
+
+State 169
+
+   32 Procedure: PROCEDURE Name '(' Params ')' ';' . Consts Enums Dclns Body Name ';'
+
+    CONST  shift, and go to state 7
+
+    $default  reduce using rule 10 (Consts)
+
+    Consts  go to state 212
+
+
+State 170
+
+  116 A: CHR '(' Expression . ')'
+
+    ')'  shift, and go to state 213
+
+
+State 171
+
+  114 A: PRED '(' Expression . ')'
+
+    ')'  shift, and go to state 214
+
+
+State 172
+
+  115 A: ORD '(' Expression . ')'
+
+    ')'  shift, and go to state 215
+
+
+State 173
+
+  113 A: SUCC '(' Expression . ')'
+
+    ')'  shift, and go to state 216
+
+
+State 174
+
+  118 A: '(' Expression ')' .
+
+    $default  reduce using rule 118 (A)
+
+
+State 175
+
+   46 Statement: IF Expression THEN Statement . Statement_1_1
+
+    ELSE  shift, and go to state 217
+
+    ELSE      [reduce using rule 71 (Statement_1_1)]
+    $default  reduce using rule 71 (Statement_1_1)
+
+    Statement_1_1  go to state 218
+
+
+State 176
+
+   90 Expression: Term NE Term .
+   95 Term: Term . '+' Primary
+   96     | Term . '-' Primary
+   97     | Term . OR Primary
+
+    OR   shift, and go to state 135
+    '+'  shift, and go to state 137
+    '-'  shift, and go to state 138
+
+    $default  reduce using rule 90 (Expression)
+
+
+State 177
+
+   93 Expression: Term GT Term .
+   95 Term: Term . '+' Primary
+   96     | Term . '-' Primary
+   97     | Term . OR Primary
+
+    OR   shift, and go to state 135
+    '+'  shift, and go to state 137
+    '-'  shift, and go to state 138
+
+    $default  reduce using rule 93 (Expression)
+
+
+State 178
+
+   89 Expression: Term EQ Term .
+   95 Term: Term . '+' Primary
+   96     | Term . '-' Primary
+   97     | Term . OR Primary
+
+    OR   shift, and go to state 135
+    '+'  shift, and go to state 137
+    '-'  shift, and go to state 138
+
+    $default  reduce using rule 89 (Expression)
+
+
+State 179
+
+   91 Expression: Term GTE Term .
+   95 Term: Term . '+' Primary
+   96     | Term . '-' Primary
+   97     | Term . OR Primary
+
+    OR   shift, and go to state 135
+    '+'  shift, and go to state 137
+    '-'  shift, and go to state 138
+
+    $default  reduce using rule 91 (Expression)
+
+
+State 180
+
+   88 Expression: Term LTE Term .
+   95 Term: Term . '+' Primary
+   96     | Term . '-' Primary
+   97     | Term . OR Primary
+
+    OR   shift, and go to state 135
+    '+'  shift, and go to state 137
+    '-'  shift, and go to state 138
+
+    $default  reduce using rule 88 (Expression)
+
+
+State 181
+
+   97 Term: Term OR Primary .
+   99 Primary: Primary . '*' Secondary
+  100        | Primary . '/' Secondary
+  101        | Primary . AND Secondary
+  102        | Primary . MOD Secondary
+
+    MOD  shift, and go to state 139
+    AND  shift, and go to state 140
+    '*'  shift, and go to state 141
+    '/'  shift, and go to state 142
+
+    $default  reduce using rule 97 (Term)
+
+
+State 182
+
+   92 Expression: Term LT Term .
+   95 Term: Term . '+' Primary
+   96     | Term . '-' Primary
+   97     | Term . OR Primary
+
+    OR   shift, and go to state 135
+    '+'  shift, and go to state 137
+    '-'  shift, and go to state 138
+
+    $default  reduce using rule 92 (Expression)
+
+
+State 183
+
+   95 Term: Term '+' Primary .
+   99 Primary: Primary . '*' Secondary
+  100        | Primary . '/' Secondary
+  101        | Primary . AND Secondary
+  102        | Primary . MOD Secondary
+
+    MOD  shift, and go to state 139
+    AND  shift, and go to state 140
+    '*'  shift, and go to state 141
+    '/'  shift, and go to state 142
+
+    $default  reduce using rule 95 (Term)
+
+
+State 184
+
+   96 Term: Term '-' Primary .
+   99 Primary: Primary . '*' Secondary
+  100        | Primary . '/' Secondary
+  101        | Primary . AND Secondary
+  102        | Primary . MOD Secondary
+
+    MOD  shift, and go to state 139
+    AND  shift, and go to state 140
+    '*'  shift, and go to state 141
+    '/'  shift, and go to state 142
+
+    $default  reduce using rule 96 (Term)
+
+
+State 185
+
+  102 Primary: Primary MOD Secondary .
+
+    $default  reduce using rule 102 (Primary)
+
+
+State 186
+
+  101 Primary: Primary AND Secondary .
+
+    $default  reduce using rule 101 (Primary)
+
+
+State 187
+
+   99 Primary: Primary '*' Secondary .
+
+    $default  reduce using rule 99 (Primary)
+
+
+State 188
+
+  100 Primary: Primary '/' Secondary .
+
+    $default  reduce using rule 100 (Primary)
+
+
+State 189
+
+  107 Tertiary: A EXP Tertiary .
+
+    $default  reduce using rule 107 (Tertiary)
+
+
+State 190
+
+  119 A_1: Expression . ')'
+  120    | Expression . ',' A_1
+
+    ','  shift, and go to state 219
+    ')'  shift, and go to state 220
+
+
+State 191
+
+  117 A: Name '(' A_1 .
+
+    $default  reduce using rule 117 (A)
+
+
+State 192
+
+   62 Statement_1_1_1_1_1_1: MName ',' . Statement_1_1_1_1_1_1
+
+    IDENTIFIER  shift, and go to state 3
+
+    Statement_1_1_1_1_1_1  go to state 221
+    MName                  go to state 146
+    Name                   go to state 147
+
+
+State 193
+
+   61 Statement_1_1_1_1_1_1: MName ')' .
+
+    $default  reduce using rule 61 (Statement_1_1_1_1_1_1)
+
+
+State 194
+
+   69 Statement_1_1_1: Statement UNTIL Expression .
+
+    $default  reduce using rule 69 (Statement_1_1_1)
+
+
+State 195
+
+   70 Statement_1_1_1: Statement ';' Statement_1_1_1 .
+
+    $default  reduce using rule 70 (Statement_1_1_1)
+
+
+State 196
+
+   56 Statement: RETURN '(' Expression ')' .
+
+    $default  reduce using rule 56 (Statement)
+
+
+State 197
+
+   51 Statement: FOR Name ASSIGNMENT Expression . UPTO Expression DO Statement
+   52          | FOR Name ASSIGNMENT Expression . DOWNTO Expression DO Statement
+
+    UPTO    shift, and go to state 222
+    DOWNTO  shift, and go to state 223
+
+
+State 198
+
+   53 Statement: CASE Expression OF Statement_1_1_1_1_1 .
+
+    $default  reduce using rule 53 (Statement)
+
+
+State 199
+
+   63 Statement_1_1_1_1_1: CaseClause . Statement_1_1_1_1_1_1_1_1
+   64                    | CaseClause . Statement_1_1_1_1_1
+
+    END          shift, and go to state 224
+    IDENTIFIER   shift, and go to state 3
+    CHAR         shift, and go to state 22
+    INTEGER_NUM  shift, and go to state 23
+    OTHERWISE    shift, and go to state 225
+
+    Statement_1_1_1_1_1        go to state 226
+    Statement_1_1_1_1_1_1_1_1  go to state 227
+    CaseClause                 go to state 199
+    Cl                         go to state 200
+    RangeStuf                  go to state 201
+    OtherwiseClause            go to state 228
+    Name                       go to state 202
+    Ints                       go to state 203
+    Chrs                       go to state 204
+
+
+State 200
+
+   78 CaseClause: Cl . ':' Statement ';'
+
+    ':'  shift, and go to state 229
+
+
+State 201
+
+   79 Cl: RangeStuf . RANGE RangeStuf
+   80   | RangeStuf .
+
+    RANGE  shift, and go to state 230
+
+    $default  reduce using rule 80 (Cl)
+
+
+State 202
+
+   81 RangeStuf: Name .
+
+    $default  reduce using rule 81 (RangeStuf)
+
+
+State 203
+
+   83 RangeStuf: Ints .
+
+    $default  reduce using rule 83 (RangeStuf)
+
+
+State 204
+
+   82 RangeStuf: Chrs .
+
+    $default  reduce using rule 82 (RangeStuf)
+
+
+State 205
+
+   47 Statement: WHILE Expression DO Statement .
+
+    $default  reduce using rule 47 (Statement)
+
+
+State 206
+
+   74 Statement_1: MExpression ',' . Statement_1
+
+    STRING       shift, and go to state 154
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Statement_1  go to state 231
+    MExpression  go to state 156
+    Expression   go to state 157
+    Term         go to state 92
+    Primary      go to state 93
+    Secondary    go to state 94
+    Tertiary     go to state 95
+    A            go to state 96
+    Name         go to state 97
+    Ints         go to state 98
+    Chrs         go to state 99
+    Strs         go to state 158
+
+
+State 207
+
+   73 Statement_1: MExpression ')' .
+
+    $default  reduce using rule 73 (Statement_1)
+
+
+State 208
+
+   68 Statement_1_1_1_1: Statement ';' Statement_1_1_1_1 .
+
+    $default  reduce using rule 68 (Statement_1_1_1_1)
+
+
+State 209
+
+   60 Statement_1_1_1_1_1_1_1: Expression ',' . Statement_1_1_1_1_1_1_1
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Statement_1_1_1_1_1_1_1  go to state 232
+    Expression               go to state 165
+    Term                     go to state 92
+    Primary                  go to state 93
+    Secondary                go to state 94
+    Tertiary                 go to state 95
+    A                        go to state 96
+    Name                     go to state 97
+    Ints                     go to state 98
+    Chrs                     go to state 99
+
+
+State 210
+
+   59 Statement_1_1_1_1_1_1_1: Expression ')' .
+
+    $default  reduce using rule 59 (Statement_1_1_1_1_1_1_1)
+
+
+State 211
+
+   31 Function: FUNCTION Name '(' Params ')' ':' Name . ';' Consts Enums Dclns Body Name ';'
+
+    ';'  shift, and go to state 233
+
+
+State 212
+
+   32 Procedure: PROCEDURE Name '(' Params ')' ';' Consts . Enums Dclns Body Name ';'
+
+    TYPE  shift, and go to state 12
+
+    $default  reduce using rule 18 (Enums)
+
+    Enums  go to state 234
+
+
+State 213
+
+  116 A: CHR '(' Expression ')' .
+
+    $default  reduce using rule 116 (A)
+
+
+State 214
+
+  114 A: PRED '(' Expression ')' .
+
+    $default  reduce using rule 114 (A)
+
+
+State 215
+
+  115 A: ORD '(' Expression ')' .
+
+    $default  reduce using rule 115 (A)
+
+
+State 216
+
+  113 A: SUCC '(' Expression ')' .
+
+    $default  reduce using rule 113 (A)
+
+
+State 217
+
+   72 Statement_1_1: ELSE . Statement
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body       go to state 69
+    Statement  go to state 235
+    Name       go to state 72
+
+
+State 218
+
+   46 Statement: IF Expression THEN Statement Statement_1_1 .
+
+    $default  reduce using rule 46 (Statement)
+
+
+State 219
+
+  120 A_1: Expression ',' . A_1
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 190
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    A_1         go to state 236
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 220
+
+  119 A_1: Expression ')' .
+
+    $default  reduce using rule 119 (A_1)
+
+
+State 221
+
+   62 Statement_1_1_1_1_1_1: MName ',' Statement_1_1_1_1_1_1 .
+
+    $default  reduce using rule 62 (Statement_1_1_1_1_1_1)
+
+
+State 222
+
+   51 Statement: FOR Name ASSIGNMENT Expression UPTO . Expression DO Statement
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 237
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 223
+
+   52 Statement: FOR Name ASSIGNMENT Expression DOWNTO . Expression DO Statement
+
+    IDENTIFIER   shift, and go to state 3
+    CHR          shift, and go to state 82
+    CHAR         shift, and go to state 22
+    PRED         shift, and go to state 83
+    NOT          shift, and go to state 84
+    INTEGER_NUM  shift, and go to state 23
+    ORD          shift, and go to state 85
+    EOFX         shift, and go to state 86
+    SUCC         shift, and go to state 87
+    '('          shift, and go to state 88
+    '+'          shift, and go to state 89
+    '-'          shift, and go to state 90
+
+    Expression  go to state 238
+    Term        go to state 92
+    Primary     go to state 93
+    Secondary   go to state 94
+    Tertiary    go to state 95
+    A           go to state 96
+    Name        go to state 97
+    Ints        go to state 98
+    Chrs        go to state 99
+
+
+State 224
+
+   65 Statement_1_1_1_1_1_1_1_1: END .
+
+    $default  reduce using rule 65 (Statement_1_1_1_1_1_1_1_1)
+
+
+State 225
+
+   84 OtherwiseClause: OTHERWISE . Statement OtherwiseClause_1
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body       go to state 69
+    Statement  go to state 239
+    Name       go to state 72
+
+
+State 226
+
+   64 Statement_1_1_1_1_1: CaseClause Statement_1_1_1_1_1 .
+
+    $default  reduce using rule 64 (Statement_1_1_1_1_1)
+
+
+State 227
+
+   63 Statement_1_1_1_1_1: CaseClause Statement_1_1_1_1_1_1_1_1 .
+
+    $default  reduce using rule 63 (Statement_1_1_1_1_1)
+
+
+State 228
+
+   66 Statement_1_1_1_1_1_1_1_1: OtherwiseClause . END
+
+    END  shift, and go to state 240
+
+
+State 229
+
+   78 CaseClause: Cl ':' . Statement ';'
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body       go to state 69
+    Statement  go to state 241
+    Name       go to state 72
+
+
+State 230
+
+   79 Cl: RangeStuf RANGE . RangeStuf
+
+    IDENTIFIER   shift, and go to state 3
+    CHAR         shift, and go to state 22
+    INTEGER_NUM  shift, and go to state 23
+
+    RangeStuf  go to state 242
+    Name       go to state 202
+    Ints       go to state 203
+    Chrs       go to state 204
+
+
+State 231
+
+   74 Statement_1: MExpression ',' Statement_1 .
+
+    $default  reduce using rule 74 (Statement_1)
+
+
+State 232
+
+   60 Statement_1_1_1_1_1_1_1: Expression ',' Statement_1_1_1_1_1_1_1 .
+
+    $default  reduce using rule 60 (Statement_1_1_1_1_1_1_1)
+
+
+State 233
+
+   31 Function: FUNCTION Name '(' Params ')' ':' Name ';' . Consts Enums Dclns Body Name ';'
+
+    CONST  shift, and go to state 7
+
+    $default  reduce using rule 10 (Consts)
+
+    Consts  go to state 243
+
+
+State 234
+
+   32 Procedure: PROCEDURE Name '(' Params ')' ';' Consts Enums . Dclns Body Name ';'
+
+    VAR  shift, and go to state 19
+
+    $default  reduce using rule 3 (Dclns)
+
+    Dclns  go to state 244
+
+
+State 235
+
+   72 Statement_1_1: ELSE Statement .
+
+    $default  reduce using rule 72 (Statement_1_1)
+
+
+State 236
+
+  120 A_1: Expression ',' A_1 .
+
+    $default  reduce using rule 120 (A_1)
+
+
+State 237
+
+   51 Statement: FOR Name ASSIGNMENT Expression UPTO Expression . DO Statement
+
+    DO  shift, and go to state 245
+
+
+State 238
+
+   52 Statement: FOR Name ASSIGNMENT Expression DOWNTO Expression . DO Statement
+
+    DO  shift, and go to state 246
+
+
+State 239
+
+   84 OtherwiseClause: OTHERWISE Statement . OtherwiseClause_1
+
+    ';'  shift, and go to state 247
+
+    $default  reduce using rule 85 (OtherwiseClause_1)
+
+    OtherwiseClause_1  go to state 248
+
+
+State 240
+
+   66 Statement_1_1_1_1_1_1_1_1: OtherwiseClause END .
+
+    $default  reduce using rule 66 (Statement_1_1_1_1_1_1_1_1)
+
+
+State 241
+
+   78 CaseClause: Cl ':' Statement . ';'
+
+    ';'  shift, and go to state 249
+
+
+State 242
+
+   79 Cl: RangeStuf RANGE RangeStuf .
+
+    $default  reduce using rule 79 (Cl)
+
+
+State 243
+
+   31 Function: FUNCTION Name '(' Params ')' ':' Name ';' Consts . Enums Dclns Body Name ';'
+
+    TYPE  shift, and go to state 12
+
+    $default  reduce using rule 18 (Enums)
+
+    Enums  go to state 250
+
+
+State 244
+
+   32 Procedure: PROCEDURE Name '(' Params ')' ';' Consts Enums Dclns . Body Name ';'
+
+    BEGINX  shift, and go to state 49
+
+    Body  go to state 251
+
+
+State 245
+
+   51 Statement: FOR Name ASSIGNMENT Expression UPTO Expression DO . Statement
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body       go to state 69
+    Statement  go to state 252
+    Name       go to state 72
+
+
+State 246
+
+   52 Statement: FOR Name ASSIGNMENT Expression DOWNTO Expression DO . Statement
+
+    IDENTIFIER  shift, and go to state 3
+    IF          shift, and go to state 59
+    READ        shift, and go to state 60
+    REPEAT      shift, and go to state 61
+    RETURN      shift, and go to state 62
+    FOR         shift, and go to state 63
+    CASE        shift, and go to state 64
+    WHILE       shift, and go to state 65
+    OUTPUT      shift, and go to state 66
+    BEGINX      shift, and go to state 49
+    LOOP        shift, and go to state 67
+    EXITX       shift, and go to state 68
+
+    $default  reduce using rule 58 (Statement)
+
+    Body       go to state 69
+    Statement  go to state 253
+    Name       go to state 72
+
+
+State 247
+
+   86 OtherwiseClause_1: ';' .
+
+    $default  reduce using rule 86 (OtherwiseClause_1)
+
+
+State 248
+
+   84 OtherwiseClause: OTHERWISE Statement OtherwiseClause_1 .
+
+    $default  reduce using rule 84 (OtherwiseClause)
+
+
+State 249
+
+   78 CaseClause: Cl ':' Statement ';' .
+
+    $default  reduce using rule 78 (CaseClause)
+
+
+State 250
+
+   31 Function: FUNCTION Name '(' Params ')' ':' Name ';' Consts Enums . Dclns Body Name ';'
+
+    VAR  shift, and go to state 19
+
+    $default  reduce using rule 3 (Dclns)
+
+    Dclns  go to state 254
+
+
+State 251
+
+   32 Procedure: PROCEDURE Name '(' Params ')' ';' Consts Enums Dclns Body . Name ';'
+
+    IDENTIFIER  shift, and go to state 3
+
+    Name  go to state 255
+
+
+State 252
+
+   51 Statement: FOR Name ASSIGNMENT Expression UPTO Expression DO Statement .
+
+    $default  reduce using rule 51 (Statement)
+
+
+State 253
+
+   52 Statement: FOR Name ASSIGNMENT Expression DOWNTO Expression DO Statement .
+
+    $default  reduce using rule 52 (Statement)
+
+
+State 254
+
+   31 Function: FUNCTION Name '(' Params ')' ':' Name ';' Consts Enums Dclns . Body Name ';'
+
+    BEGINX  shift, and go to state 49
+
+    Body  go to state 256
+
+
+State 255
+
+   32 Procedure: PROCEDURE Name '(' Params ')' ';' Consts Enums Dclns Body Name . ';'
+
+    ';'  shift, and go to state 257
+
+
+State 256
+
+   31 Function: FUNCTION Name '(' Params ')' ':' Name ';' Consts Enums Dclns Body . Name ';'
+
+    IDENTIFIER  shift, and go to state 3
+
+    Name  go to state 258
+
+
+State 257
+
+   32 Procedure: PROCEDURE Name '(' Params ')' ';' Consts Enums Dclns Body Name ';' .
+
+    $default  reduce using rule 32 (Procedure)
+
+
+State 258
+
+   31 Function: FUNCTION Name '(' Params ')' ':' Name ';' Consts Enums Dclns Body Name . ';'
+
+    ';'  shift, and go to state 259
+
+
+State 259
+
+   31 Function: FUNCTION Name '(' Params ')' ':' Name ';' Consts Enums Dclns Body Name ';' .
+
+    $default  reduce using rule 31 (Function)

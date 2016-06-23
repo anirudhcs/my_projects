@@ -1,0 +1,118 @@
+---------------------------
+[  453]   program(8) @ L8/C1
+[    4]   . <identifier>(1) @ L8/C9
+[    1]   . . Enumerate(0) @ L8/C9
+[   72]   . types(4) @ 
+[   34]   . . type(2) @ 
+[   11]   . . . <identifier>(1) @  Decoration: 8
+[    8]   . . . . boolean(0) @  Decoration: 34
+[   29]   . . . lit(2) @ 
+[   18]   . . . . <identifier>(1) @  Decoration: 170
+[   15]   . . . . . false(0) @  Decoration: 29
+[   25]   . . . . <identifier>(1) @  Decoration: 177
+[   22]   . . . . . true(0) @  Decoration: 29
+[   46]   . . type(1) @ 
+[   42]   . . . <identifier>(1) @  Decoration: 39
+[   39]   . . . . integer(0) @  Decoration: 46
+[   57]   . . type(1) @ 
+[   53]   . . . <identifier>(1) @  Decoration: 50
+[   50]   . . . . char(0) @  Decoration: 57
+[   68]   . . type(1) @ 
+[   64]   . . . <identifier>(1) @  Decoration: 61
+[   61]   . . . . string(0) @  Decoration: 68
+[   79]   . consts(0) @ L0/C0
+[  177]   . types(1) @ L10/C1
+[  172]   . . type(2) @ L12/C12
+[   85]   . . . <identifier>(1) @ L12/C5 Decoration: 82
+[   82]   . . . . Number(0) @ L12/C5 Decoration: 172
+[  159]   . . . lit(10) @ L0/C0
+[   92]   . . . . <identifier>(1) @ L12/C16 Decoration: 170
+[   89]   . . . . . zero(0) @ L12/C16 Decoration: 159
+[   99]   . . . . <identifier>(1) @ L12/C22 Decoration: 177
+[   96]   . . . . . one(0) @ L12/C22 Decoration: 159
+[  106]   . . . . <identifier>(1) @ L12/C27 Decoration: 178
+[  103]   . . . . . two(0) @ L12/C27 Decoration: 159
+[  113]   . . . . <identifier>(1) @ L12/C32 Decoration: 179
+[  110]   . . . . . three(0) @ L12/C32 Decoration: 159
+[  120]   . . . . <identifier>(1) @ L12/C39 Decoration: 180
+[  117]   . . . . . four(0) @ L12/C39 Decoration: 159
+[  127]   . . . . <identifier>(1) @ L12/C45 Decoration: 181
+[  124]   . . . . . five(0) @ L12/C45 Decoration: 159
+[  134]   . . . . <identifier>(1) @ L12/C51 Decoration: 182
+[  131]   . . . . . six(0) @ L12/C51 Decoration: 159
+[  141]   . . . . <identifier>(1) @ L12/C56 Decoration: 183
+[  138]   . . . . . seven(0) @ L12/C56 Decoration: 159
+[  148]   . . . . <identifier>(1) @ L12/C63 Decoration: 184
+[  145]   . . . . . eight(0) @ L12/C63 Decoration: 159
+[  155]   . . . . <identifier>(1) @ L12/C70 Decoration: 185
+[  152]   . . . . . nine(0) @ L12/C70 Decoration: 159
+[  200]   . dclns(1) @ L14/C1
+[  195]   . . var(2) @ L0/C0
+[  184]   . . . <identifier>(1) @ L16/C5
+[  181]   . . . . n(0) @ L16/C5 Decoration: 195
+[  191]   . . . <identifier>(1) @ L16/C9 Decoration: 85
+[  188]   . . . . Number(0) @ L16/C9
+[  371]   . subprogs(1) @ L0/C0
+[  360]   . . function(8) @ L19/C1 Decoration: 187
+[  207]   . . . <identifier>(1) @ L19/C10 Decoration: 10000
+[  204]   . . . . Ord(0) @ L19/C10 Decoration: 360
+[  249]   . . . params(2) @ L0/C0
+[  225]   . . . . var(2) @ L0/C0
+[  214]   . . . . . <identifier>(1) @ L19/C16 Decoration: 10001
+[  211]   . . . . . . n(0) @ L19/C16 Decoration: 225
+[  221]   . . . . . <identifier>(1) @ L19/C20 Decoration: 85
+[  218]   . . . . . . Number(0) @ L19/C20
+[  244]   . . . . var(2) @ L0/C0
+[  233]   . . . . . <identifier>(1) @ L19/C28 Decoration: 10002
+[  230]   . . . . . . value(0) @ L19/C28 Decoration: 244
+[  240]   . . . . . <identifier>(1) @ L19/C36 Decoration: 42
+[  237]   . . . . . . integer(0) @ L19/C36
+[  257]   . . . <identifier>(1) @ L19/C48 Decoration: 42
+[  254]   . . . . integer(0) @ L19/C48
+[  261]   . . . consts(0) @ L0/C0
+[  264]   . . . types(0) @ L0/C0
+[  267]   . . . dclns(0) @ L0/C0
+[  348]   . . . block(2) @ L21/C1
+[  339]   . . . . if(3) @ L23/C5
+[  284]   . . . . . =(2) @ L23/C10
+[  273]   . . . . . . <identifier>(1) @ L23/C8 Decoration: 214
+[  270]   . . . . . . . n(0) @ L23/C8
+[  280]   . . . . . . <identifier>(1) @ L23/C12 Decoration: 92
+[  277]   . . . . . . . zero(0) @ L23/C12
+[  296]   . . . . . return(1) @ L23/C22
+[  292]   . . . . . . <identifier>(1) @ L23/C30 Decoration: 233
+[  289]   . . . . . . . value(0) @ L23/C30
+[  335]   . . . . . return(1) @ L24/C15
+[  329]   . . . . . . call(3) @ L0/C0
+[  303]   . . . . . . . <identifier>(1) @ L24/C23 Decoration: 207
+[  300]   . . . . . . . . Ord(0) @ L24/C23
+[  314]   . . . . . . . pred(1) @ L24/C29 Decoration: 172
+[  310]   . . . . . . . . <identifier>(1) @ L24/C34 Decoration: 214
+[  307]   . . . . . . . . . n(0) @ L24/C34
+[  325]   . . . . . . . succ(1) @ L24/C38 Decoration: 46
+[  321]   . . . . . . . . <identifier>(1) @ L24/C43 Decoration: 233
+[  318]   . . . . . . . . . value(0) @ L24/C43
+[  345]   . . . . <null>(0) @ L0/C0
+[  356]   . . . <identifier>(1) @ L26/C5
+[  353]   . . . . Ord(0) @ L26/C5
+[  441]   . block(2) @ L28/C1
+[  431]   . . upto(4) @ L30/C5 Decoration: 453
+[  378]   . . . <identifier>(1) @ L30/C9 Decoration: 184
+[  375]   . . . . n(0) @ L30/C9
+[  385]   . . . <identifier>(1) @ L30/C14 Decoration: 92
+[  382]   . . . . zero(0) @ L30/C14
+[  392]   . . . <identifier>(1) @ L30/C22 Decoration: 155
+[  389]   . . . . nine(0) @ L30/C22
+[  427]   . . . output(1) @ L30/C30
+[  423]   . . . . integer(1) @ L0/C0
+[  417]   . . . . . call(3) @ L0/C0
+[  399]   . . . . . . <identifier>(1) @ L30/C39 Decoration: 207
+[  396]   . . . . . . . Ord(0) @ L30/C39
+[  406]   . . . . . . <identifier>(1) @ L30/C43 Decoration: 184
+[  403]   . . . . . . . n(0) @ L30/C43
+[  413]   . . . . . . <integer>(1) @ L30/C45
+[  410]   . . . . . . . 0(0) @ L30/C45
+[  438]   . . <null>(0) @ L0/C0
+[  449]   . <identifier>(1) @ L32/C5
+[  446]   . . Enumerate(0) @ L32/C5
+---------------------------

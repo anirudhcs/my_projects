@@ -1,0 +1,12 @@
+program pr2c02:
+{
+  this quits when x=0
+  
+  }
+var y,x:integer;
+ 
+begin
+x := 5;
+for y := 1 to x do
+		    output(x,y);
+end pr2c02.                                

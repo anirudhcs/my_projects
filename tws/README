@@ -1,0 +1,7 @@
+This is the compiler for a simple language that has been written in the TWS (Translator writing system) framework developed by 
+Prof. Manuel Bermudez. The main important code files are
+    - tiny/CodeGenerator.c
+    - tiny/Constrainer.c
+    - tiny/parser/parse.tiny
+    - tiny/parser/lex.tiny
+   

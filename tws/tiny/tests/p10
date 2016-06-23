@@ -1,0 +1,15 @@
+program pr2c02:
+{
+  this quits when x=0
+  
+  }
+var x,i: integer;
+ 
+begin
+x := 1;
+for i := 10 downto 1 do 
+begin
+	output(x);
+	x := x+1;
+end
+end pr2c02.                                

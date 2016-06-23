@@ -1,0 +1,6 @@
+       LIT    0             
+       GOTO   L1                        
+L1     LIT    11111         
+       SOS    OUTPUT        
+       SOS    OUTPUTL                     
+       HALT                 

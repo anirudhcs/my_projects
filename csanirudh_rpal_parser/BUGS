@@ -1,0 +1,1 @@
+When an erroneous input is given in some specific cases instead of termination with proper reason, it may go to segmentation fault
